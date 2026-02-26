@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 
 const links = [
   { href: '/sessions', label: 'Sessions' },
-  { href: '/songs', label: 'Songs' },
+  { href: '/projects', label: 'Projects' },
 ]
 
 export function Nav() {
@@ -16,7 +16,7 @@ export function Nav() {
     <nav className="border-b mb-8">
       <div className="max-w-xl mx-auto px-8 h-14 flex items-center justify-between mt-2">
         <Link href="/sessions" className="font-semibold tracking-tight">
-          Reprise
+          Cadence
         </Link>
         <div className="flex gap-1">
           {links.map((link) => (
