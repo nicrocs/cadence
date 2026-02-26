@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cadence
+
+A work session tracker built around intention, focus, and continuity.
+
+## The Loop
+
+Most productivity tools ask you to log what you did. Cadence asks you to declare what you're *about* to do — and to note exactly where to pick up next time.
+
+1. **Before** — set your intention for the session
+2. **During** — focused work, app stays out of the way
+3. **After** — log what you accomplished and where to start next time
+
+The pickup note is the core idea. Written at the end of a session while context is fresh, it removes the "where was I?" friction that makes it hard to get back into flow.
+
+## Stack
+
+- [Next.js](https://nextjs.org) (App Router, Turbopack)
+- [TypeScript](https://www.typescriptlang.org)
+- [Tailwind CSS](https://tailwindcss.com)
+- [shadcn/ui](https://ui.shadcn.com)
+- [Prisma](https://www.prisma.io) with [Neon](https://neon.tech) (Postgres)
+- [Clerk](https://clerk.com) for auth
+- Deployed on [Vercel](https://vercel.com)
+
+## Related
+
+Built as a sibling to [Reprise](https://github.com/nicrocs/reprise), a guitar practice tracker built around the same intention-first loop.
 
 ## Getting Started
 
-First, run the development server:
+```bash
+npm install
+```
+
+Copy `.env.example` to `.env.local` and fill in your credentials:
+
+```bash
+cp .env.example .env.local
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+DATABASE_URL=
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Database
 
-## Learn More
+Generate the Prisma client and run migrations:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The Prisma client is generated locally at `prisma/generated/prisma`. All server action files require `'use server'` to prevent the client from being bundled into the client.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+  app/
+    (app)/          # authenticated routes with nav
+    actions/        # server actions ('use server')
+  components/       # shared UI components
+  lib/
+    prisma.ts       # singleton Prisma client
+    constants.ts    # shared constants
+prisma/
+  schema.prisma
+  generated/prisma/ # local client output
+```

@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+  
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas   = ["cadence"]
+}
+
+enum WorkSessionType {
+  DEEP_WORK      // focused, single-task block
+  PLANNING       // thinking, organizing, reviewing
+  REVIEW         // retrospective, reflection
+  COLLABORATION  // pairing, meetings with purpose
+  @@schema("cadence")
+}
+
+model Project {
+  id        String        @id @default(cuid())
+  userId    String
+  name      String
+  color     String?       // for visual grouping in UI
+  sessions  WorkSession[]
+  createdAt DateTime      @default(now())
+  @@unique([userId, name])
+  @@schema("cadence")
+}
+
+model WorkSession {
+  id            String           @id @default(cuid())
+  userId        String
+  date          DateTime         @default(now())
+  duration      Int              // minutes
+  type          WorkSessionType  @default(DEEP_WORK)
+  projectId     String?
+  project       Project?         @relation(fields: [projectId], references: [id])
+  intention     String           // what you planned to accomplish — required
+  accomplished  String?          // what actually happened
+  pickup        String?          // exactly where to start next time
+  intentionMet  Boolean?
+  mood          Int?             // 1-5
+  focus         Int?             // 1-5
+  tags          WorkTag[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  @@schema("cadence")
+}
+
+model WorkTag {
+  id       String        @id @default(cuid())
+  userId   String
+  name     String
+  sessions WorkSession[]
+  @@unique([userId, name])
+  @@schema("cadence")
+}
