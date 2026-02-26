@@ -36,7 +36,7 @@ export default async function SessionsPage() {
               <CardHeader>
                 {session.project && (
                   <CardTitle>
-                    <Link href={`/songs/${session.projectId}`}>{session.project.name}</Link>
+                    <Link href={`/projects/${session.projectId}`}>{session.project.name}</Link>
                   </CardTitle>
                 )}
                 <span className="text-sm text-muted-foreground">{session.type}</span>
