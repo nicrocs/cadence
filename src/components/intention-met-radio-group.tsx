@@ -15,7 +15,7 @@ export function IntentionMetRadioGroup({ defaultValue, onChange }: Props) {
 
   const [value, setValue] = useState(toStringValue(defaultValue))
 
-  const onValueChange = (v) => {
+  const onValueChange = (v: string) => {
     setValue(v)
     onChange?.(v === 'true' ? true : v === 'false' ? false : null)
   }

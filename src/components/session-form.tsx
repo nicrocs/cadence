@@ -84,7 +84,7 @@ export function SessionForm({ action, defaultValues, submitLabel }: SessionFormP
           <span className="text-sm text-gray-500">
             What type of work did you do?
           </span>
-          <TypeSelect name="type" />
+          {/* <TypeSelect name="type" /> */}
         </div>
       <div>
         <Label>Project</Label>

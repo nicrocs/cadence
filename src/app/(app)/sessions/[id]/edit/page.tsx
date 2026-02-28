@@ -22,7 +22,7 @@ export default async function EditSessionPage({ params } : { params: Promise<{ i
   return (
     <main className="max-w-xl mx-auto p-8">
       <h1 className="text-2xl font-bold mb-6">Edit Session</h1>
-      <SessionForm
+      {/* <SessionForm
         action={updateWithId}
         submitLabel="Update Session"
         defaultValues={{
@@ -34,7 +34,7 @@ export default async function EditSessionPage({ params } : { params: Promise<{ i
           intention: session.intention,
           intentionMet: session.intentionMet
         }}
-      />
+      /> */}
     </main>
   )
 }
