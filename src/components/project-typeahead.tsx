@@ -6,8 +6,12 @@ import { Button } from '@/components/ui/button'
 import { getProjects } from '@/app/actions/projects'
 
 export type Project = { id: string; name: string; }
-
-export function ProjectTypeahead({ defaultValue, onSelect, onChange }: { defaultValue?: string, onSelect: (project: Project | null) => void }) {
+interface ProjectTypeaheadProps { 
+  defaultValue?: string, 
+  onSelect: (project: Project | null) => void
+  onChange: (value: string) => void
+}
+export function ProjectTypeahead({ defaultValue, onSelect, onChange }: ProjectTypeaheadProps) {
   const [query, setQuery] = useState(defaultValue ?? '')
     const [suggestions, setSuggestions] = useState<Project[]>([])
     // const [selectedProject, setSelectedProject] = useState<Project | null>(null)
