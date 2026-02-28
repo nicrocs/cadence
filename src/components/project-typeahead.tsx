@@ -2,45 +2,45 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { getProjects } from '@/app/actions/projects'
 
-type Project = { id: string; name: string; }
+export type Project = { id: string; name: string; }
 
-export function ProjectTypeahead({ defaultValue }: { defaultValue?: string }) {
+export function ProjectTypeahead({ defaultValue, onSelect, onChange }: { defaultValue?: string, onSelect: (project: Project | null) => void }) {
   const [query, setQuery] = useState(defaultValue ?? '')
     const [suggestions, setSuggestions] = useState<Project[]>([])
-    const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+    // const [selectedProject, setSelectedProject] = useState<Project | null>(null)
     const containerRef = useRef(null)
 
     // derived from query and suggestions directly — no state needed
     const open = suggestions.length > 0 && query.length > 0
-    console.log({ selectedProject })
 
     useEffect(() => {
         if (query.length < 1) return
 
         const timeout = setTimeout(() => {
             getProjects(query).then((results) => {
-            setSuggestions(results)
-            const exactMatch = results.find(
-                (s) => s.name.toLowerCase() === query.toLowerCase()
-            )
-            if (exactMatch) setSelectedProject(exactMatch)
+              setSuggestions(results)
+              const exactMatch = results.find(
+                  (s) => s.name.toLowerCase() === query.toLowerCase()
+              )
+              if (exactMatch) onSelect(exactMatch)
             })
         }, 200)
 
         return () => clearTimeout(timeout)
-    }, [query])
+    }, [query, onSelect])
 
     function handleSelect(project: Project) {
         setQuery(project.name)
-        setSelectedProject(project)
+        onSelect(project)
         setSuggestions([])
     }
 
     function handleClear() {
         setQuery('')
-        setSelectedProject(null)
+        onSelect(null)
         setSuggestions([])
     }
 
@@ -53,19 +53,21 @@ export function ProjectTypeahead({ defaultValue }: { defaultValue?: string }) {
           value={query}
           onChange={(e) => {
             setQuery(e.target.value)
-            setSelectedProject(null)
+            onSelect(null)
+            onChange(e.target.value)
           }}
-          placeholder="Song title (optional)"
+          placeholder="Project name (optional)"
           autoComplete="off"
         />
         {query && (
-          <button
+          <Button
             type="button"
+            size='sm'
             onClick={handleClear}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm"
+            className="absolute right-3 top-1/2 -translate-y-1/2"
           >
             ✕
-          </button>
+          </Button>
         )}
         {open && suggestions.length > 0 && (
           <ul className="absolute z-10 w-full bg-white border rounded shadow mt-1">

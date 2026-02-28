@@ -24,7 +24,7 @@ export async function getProjectsWithRecentSession() {
   const { userId } = await auth()
   if (!userId) return []
 
-  const songs = await prisma.project.findMany({
+  const projects = await prisma.project.findMany({
     where: { userId },
     include: {
       sessions: {
@@ -34,8 +34,8 @@ export async function getProjectsWithRecentSession() {
     },
   })
 
-  // sort by most recently practiced
-  return songs.sort((a, b) => {
+  // sort by most recently worked on
+  return projects.sort((a, b) => {
     const aDate = a.sessions[0]?.date ?? new Date(0)
     const bDate = b.sessions[0]?.date ?? new Date(0)
     return bDate.getTime() - aDate.getTime()

@@ -9,25 +9,28 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-const TYPES = [
+export const SESSION_TYPES = [
   { value: 'DEEP_WORK', label: 'Deep work' },
   { value: 'PLANNING', label: 'Planning' },
   { value: 'REVIEW', label: 'Review' },
   { value: 'COLLABORATION', label: 'Collaboration' },
 ]
 
-export function TypeSelect({ name = 'type' }: { name?: string }) {
-  const [value, setValue] = useState('DEEP_WORK')
+export function TypeSelect({ onChange }: { onChange: (type: string) => void }) {
+    const [value, setValue] = useState<string>('DEEP_WORK')
 
+    const onValueChange = (v: string) => {
+      setValue(v)
+      onChange(v)
+    }
   return (
     <>
-      <input type="hidden" name={name} value={value} />
-      <Select value={value} onValueChange={setValue}>
+      <Select value={value} onValueChange={onValueChange}>
         <SelectTrigger>
           <SelectValue placeholder="Type (optional)" />
         </SelectTrigger>
         <SelectContent>
-          {TYPES.map((t) => (
+          {SESSION_TYPES.map((t) => (
             <SelectItem key={t.value} value={t.value}>
               {t.label}
             </SelectItem>

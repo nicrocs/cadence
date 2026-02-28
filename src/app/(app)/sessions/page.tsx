@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Card, CardAction, CardContent, CardHeader, CardDescription, CardTitle, CardFooter } from '@/components/ui/card'
 import { DeleteButton } from '@/components/delete-button' 
 import { buttonVariants } from '@/components/ui/button'
+import { TYPE_LABELS } from '@/lib/constants'
 
 export default async function SessionsPage() {
   const { userId } = await auth()
@@ -15,6 +16,8 @@ export default async function SessionsPage() {
         orderBy: { date: 'desc' },
         include: { project: true },
     })
+
+    console.log({ sessions })
 
   return (
     <main className="max-w-xl mx-auto p-8">
@@ -39,7 +42,7 @@ export default async function SessionsPage() {
                     <Link href={`/projects/${session.projectId}`}>{session.project.name}</Link>
                   </CardTitle>
                 )}
-                <span className="text-sm text-muted-foreground">{session.type}</span>
+                <span className="text-sm text-muted-foreground">{TYPE_LABELS[session.type]}</span>
                 {session.intention && (
                   <p className="text-base font-medium text-foreground leading-snug mt-1 pl-3 border-l-2 border-primary">
                     {session.intention}

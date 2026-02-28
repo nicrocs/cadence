@@ -118,3 +118,14 @@ export async function getProjects(query: string) {
     orderBy: { name: 'asc' },
   })
 }
+
+export async function getLastSessionForProject(projectId: string) {
+  const { userId } = await auth()
+  if (!userId) return null
+
+  return prisma.workSession.findFirst({
+    where: { userId, projectId },
+    orderBy: { date: 'desc' },
+    select: { pickup: true, intention: true }
+  })
+}

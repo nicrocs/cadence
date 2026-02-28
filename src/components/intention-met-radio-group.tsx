@@ -6,17 +6,23 @@ import { Label } from '@/components/ui/label'
 
 type Props = {
   defaultValue?: boolean | null
+  onChange: (value: boolean | null) => void
 }
 
-export function IntentionMetRadioGroup({ defaultValue }: Props) {
+export function IntentionMetRadioGroup({ defaultValue, onChange }: Props) {
   const toStringValue = (v: boolean | null | undefined) =>
     v === true ? 'true' : v === false ? 'false' : ''
 
   const [value, setValue] = useState(toStringValue(defaultValue))
 
+  const onValueChange = (v) => {
+    setValue(v)
+    onChange?.(v === 'true' ? true : v === 'false' ? false : null)
+  }
+
   return (
     <>
-      <RadioGroup value={value} onValueChange={setValue} className="flex gap-6">
+      <RadioGroup value={value} onValueChange={onValueChange} className="flex gap-6">
         <div className="flex items-center gap-2">
           <RadioGroupItem value="true" id="met-yes" />
           <Label htmlFor="met-yes">Yes</Label>

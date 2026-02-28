@@ -3,8 +3,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { SubmitButton } from '@/components/submit-button'
 import { Separator } from '@/components/ui/separator'
-import { ProjectTypeahead } from '@/components/project-typeahead'
-import { IntentionMetRadioGroup } from './intentionMet-radioGroup'
+// import { ProjectTypeahead } from '@/components/project-typeahead'
+// import { IntentionMetRadioGroup } from './intention-met-radio-group'
 import { TypeSelect } from './type-select'
 
 type SessionFormProps = {
@@ -36,7 +36,7 @@ export function SessionForm({ action, defaultValues, submitLabel }: SessionFormP
               {defaultValues.intention}
               </p>
               <Separator />
-              <IntentionMetRadioGroup defaultValue={defaultValues.intentionMet} />
+              {/* <IntentionMetRadioGroup defaultValue={defaultValues.intentionMet} /> */}
           </div>
         )}
         <div className="space-y-2">
@@ -88,7 +88,7 @@ export function SessionForm({ action, defaultValues, submitLabel }: SessionFormP
         </div>
       <div>
         <Label>Project</Label>
-        <ProjectTypeahead defaultValue={defaultValues?.projectName} />
+        {/* <ProjectTypeahead defaultValue={defaultValues?.projectName} /> */}
       </div>
       <div>
         <Label htmlFor="notes">What did you accomplish?</Label>

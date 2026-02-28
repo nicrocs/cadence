@@ -7,7 +7,7 @@ import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { BackButton } from '@/components/back-button'
 
-export default async function SongDetailPage({
+export default async function ProjectDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>
@@ -48,7 +48,7 @@ export default async function SongDetailPage({
                 <>
                 <span>·</span>
                 <p>
-                    {hours > 0 && `${hours}h `}{minutes > 0 && `${minutes}m`} total practice time
+                    {hours > 0 && `${hours}h `}{minutes > 0 && `${minutes}m`} total work time
                 </p>
                 </>
             )}
@@ -64,7 +64,7 @@ export default async function SongDetailPage({
       {/* Sessions */}
       <h2 className="text-lg font-semibold mb-3">Sessions</h2>
       {project.sessions.length === 0 ? (
-        <p className="text-gray-500">No sessions logged for this song yet.</p>
+        <p className="text-gray-500">No sessions logged for this project yet.</p>
       ) : (
         <ul className="flex flex-col gap-4">
           {project.sessions.map((session) => (
