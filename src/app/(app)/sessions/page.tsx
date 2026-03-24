@@ -17,8 +17,6 @@ export default async function SessionsPage() {
         include: { project: true },
     })
 
-    console.log({ sessions })
-
   return (
     <main className="max-w-xl mx-auto p-8">
       <div className="flex justify-between items-center mb-6">

@@ -44,7 +44,7 @@ export default function NewSessionPage() {
       phase: 'work',
     })
 
-    router.push('/sessions/active')
+    router.push('/sessions/prepare')
   }
 
   return (

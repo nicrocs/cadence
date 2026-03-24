@@ -9,6 +9,7 @@ export type ActiveSession = {
   phase: 'work' | 'break'
   breakStartedAt?: number
   breakSuggestion?: BreakSuggestion
+  prepConversation?: Array<{ role: 'user' | 'assistant'; content: string }>
 }
 
 export function saveActiveSession(session: ActiveSession): void {

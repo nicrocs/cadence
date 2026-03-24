@@ -4,6 +4,10 @@ import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import { WorkSessionType } from '../../../prisma/generated/prisma/enums'
+import { streamText } from 'ai';
+import { openai } from '@ai-sdk/openai';
+import { createStreamableValue } from '@ai-sdk/rsc';
+import { getModel } from '@/lib/ai'
 
 export async function createSession(formData: FormData) {
   const { userId } = await auth()
@@ -128,4 +132,24 @@ export async function getLastSessionForProject(projectId: string) {
     orderBy: { date: 'desc' },
     select: { pickup: true, intention: true }
   })
+}
+
+export async function generate(input: string) {
+  const stream = createStreamableValue('');
+  const model = await getModel();
+
+  (async () => {
+    const { textStream } = streamText({
+      model,
+      prompt: input,
+    });
+
+    for await (const delta of textStream) {
+      stream.update(delta);
+    }
+
+    stream.done();
+  })();
+
+  return { output: stream.value };
 }
