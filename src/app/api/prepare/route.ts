@@ -1,9 +1,9 @@
-import { streamText, UIMessage, CoreMessage } from 'ai'
+import { streamText, UIMessage, ModelMessage } from 'ai'
 import { getModel } from '@/lib/ai'
 import { auth } from '@clerk/nextjs/server'
 
 // Convert UIMessage (with parts) to CoreMessage (with content string)
-function uiMessagesToCoreMessages(messages: UIMessage[]): CoreMessage[] {
+function uiMessagesToCoreMessages(messages: UIMessage[]): ModelMessage[] {
   return messages.map(msg => {
     // Extract text from parts
     const textContent = msg.parts
