@@ -51,6 +51,8 @@ export default function FinishSessionPage() {
     if (session.projectId) formData.set('projectId', session.projectId)
     if (session.projectName) formData.set('projectName', session.projectName)
 
+    console.log({ formData })
+
     await createSession(formData)
     clearActiveSession()
     router.push('/sessions')

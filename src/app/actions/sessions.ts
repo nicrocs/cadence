@@ -19,6 +19,7 @@ export async function createSession(formData: FormData) {
   const date = new Date(formData.get('date') as string)
   const projectName = formData.get('projectName') as string
   const intention = formData.get('intention') as string
+  const pickup = formData.get('pickup') as string
 
   let projectId = null
 
@@ -42,7 +43,8 @@ export async function createSession(formData: FormData) {
       accomplished,
       date,
       projectId,
-      intention
+      intention,
+      pickup
     },
   })
 
@@ -61,6 +63,7 @@ export async function updateSession(id: string, formData: FormData) {
     const intention = formData.get('intention') as string
     const intentionMetRaw = formData.get('intentionMet')
     const intentionMet = intentionMetRaw === 'true' ? true : intentionMetRaw === 'false' ? false : null
+  const pickup = formData.get('pickup') as string
 
     let projectId = null
 
@@ -85,7 +88,8 @@ export async function updateSession(id: string, formData: FormData) {
       date,
       projectId,
       intention,
-      intentionMet
+      intentionMet,
+      pickup
     },
   })
 
