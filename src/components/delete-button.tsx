@@ -1,5 +1,6 @@
 'use client'
 
+import { Trash2 } from 'lucide-react'
 import { useFormStatus } from 'react-dom'
 import { Button } from '@/components/ui/button'
 import { deleteSession } from '@/app/actions/sessions'
@@ -10,11 +11,13 @@ function DeleteButtonInner() {
   return (
     <Button
       type="submit"
-      variant="destructive"
-      size="sm"
+      variant="ghost"
+      size="icon-sm"
       disabled={pending}
+      aria-label={pending ? 'Deleting session' : 'Delete session'}
+      className="rounded-full text-muted-foreground hover:bg-accent hover:text-foreground"
     >
-      {pending ? 'Deleting...' : 'Delete'}
+      <Trash2 className="size-4" />
     </Button>
   )
 }

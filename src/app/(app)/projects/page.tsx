@@ -1,8 +1,6 @@
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
-import { buttonVariants } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 
 export default async function ProjectsPage() {
   const { userId } = await auth()
@@ -25,46 +23,52 @@ export default async function ProjectsPage() {
   })
 
   return (
-    <main className="max-w-xl mx-auto p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Projects</h1>
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
+      <div>
+        <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
+          Project Map
+        </p>
+        <h1 className="mt-3 text-[2rem] font-semibold tracking-tight">Projects</h1>
+        <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
+          Browse the projects your sessions attach to and see where momentum is building or stalling.
+        </p>
       </div>
+
       {sorted.length === 0 ? (
-        <p className="text-gray-500">No projects yet. Log a session with a project to get started.</p>
+        <div className="rounded-[1.5rem] border border-dashed bg-background/70 py-10 text-center text-muted-foreground">
+          No projects yet. Log a session with a project to get started.
+        </div>
       ) : (
-        <ul className="flex flex-col gap-4">
+        <ul>
           {sorted.map((project) => {
             const lastSession = project.sessions[0]
+
             return (
-              <li key={project.id}>
-                <Link href={`/projects/${project.id}`}>
-                  <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                    <CardContent className="pt-6">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="font-semibold text-lg">{project.name}</p>
-                        </div>
-                        <div className="text-right">
-                          {lastSession ? (
-                            <>
-                              <p className="text-sm text-gray-400">Last worked on</p>
-                              <p className="text-sm text-gray-600">
-                                {new Date(lastSession.date).toLocaleDateString()}
-                              </p>
-                            </>
-                          ) : (
-                            <p className="text-sm text-gray-400">No sessions yet</p>
-                          )}
-                        </div>
+              <li key={project.id} className="border-t border-border first:border-t-0">
+                <Link
+                  href={`/projects/${project.id}`}
+                  className="block py-5 transition-colors hover:text-cool"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <p className="text-lg font-semibold text-foreground">{project.name}</p>
+                      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                        <span>{project.sessions.length} session{project.sessions.length === 1 ? '' : 's'}</span>
+                        {lastSession ? (
+                          <span>Last worked on {new Date(lastSession.date).toLocaleDateString()}</span>
+                        ) : (
+                          <span>No sessions yet</span>
+                        )}
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                    <span className="shrink-0 text-sm text-muted-foreground">Open</span>
+                  </div>
                 </Link>
               </li>
             )
           })}
         </ul>
       )}
-    </main>
+    </div>
   )
 }

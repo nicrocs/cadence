@@ -10,19 +10,20 @@ import { getActiveSession, saveActiveSession, ActiveSession } from '@/lib/active
 
 export default function PreparePage() {
   const router = useRouter()
-  const [session, setSession] = useState<ActiveSession | null>(null)
+  const [session] = useState<ActiveSession | null>(() => {
+    if (typeof window === 'undefined') return null
+    return getActiveSession()
+  })
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [input, setInput] = useState('')
-  const [hasInitialized, setHasInitialized] = useState(false)
+  const hasInitializedRef = useRef(false)
+  const hasPromptedRef = useRef(false)
 
-  // Load session on client-side only to avoid hydration mismatch
   useEffect(() => {
-    const loadedSession = getActiveSession()
-    setSession(loadedSession)
-    if (!loadedSession) {
+    if (!session) {
       router.replace('/sessions/new')
     }
-  }, [router])
+  }, [router, session])
 
   const { messages, sendMessage, status, setMessages } = useChat({
     transport: new DefaultChatTransport({
@@ -52,10 +53,9 @@ export default function PreparePage() {
     },
   })
 
-  // Initialize with opening message
   useEffect(() => {
-    if (session?.intention && messages.length === 0 && !hasInitialized) {
-      setHasInitialized(true)
+    if (session?.intention && messages.length === 0 && !hasInitializedRef.current) {
+      hasInitializedRef.current = true
       setMessages([
         {
           id: 'opening',
@@ -64,22 +64,24 @@ export default function PreparePage() {
         },
       ])
     }
-  }, [session?.intention, messages.length, setMessages, hasInitialized])
+  }, [session?.intention, messages.length, setMessages])
 
-  // Trigger AI to ask its question after opening message is set
   useEffect(() => {
-    if (hasInitialized && messages.length === 1 && messages[0]?.id === 'opening') {
-      // Send a hidden message to trigger the AI to respond
+    if (
+      hasInitializedRef.current &&
+      !hasPromptedRef.current &&
+      messages.length === 1 &&
+      messages[0]?.id === 'opening'
+    ) {
+      hasPromptedRef.current = true
       sendMessage({ text: 'What would you like to know before I start?' })
     }
-  }, [hasInitialized, messages, sendMessage])
+  }, [messages, sendMessage])
 
-  // Auto-scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // Detect if AI has said "You're ready."
   const lastMessage = messages[messages.length - 1]
   const isReady =
     lastMessage?.role === 'assistant' &&
@@ -102,31 +104,32 @@ export default function PreparePage() {
   if (!session) return null
 
   return (
-    <main className="max-w-lg mx-auto p-8 flex flex-col gap-6 pb-32">
-      {/* Header */}
-      <div>
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 pb-32">
+      <div className="rounded-[1.5rem] border bg-card/90 p-6 shadow-sm">
+        <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
+          Session Prep
+        </p>
         {session.projectName && (
-          <p className="text-sm text-muted-foreground font-medium uppercase tracking-wide mb-1">
+          <p className="mt-4 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
             {session.projectName}
           </p>
         )}
         <p
-          className="text-base font-medium text-foreground leading-snug"
-          style={{ borderLeft: '2px solid var(--primary)', paddingLeft: '0.75rem' }}
+          className="mt-3 text-base font-medium leading-snug text-foreground"
+          style={{ borderLeft: '2px solid var(--cool)', paddingLeft: '0.75rem' }}
         >
           {session.intention}
         </p>
       </div>
 
-      {/* Messages */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 rounded-[1.5rem] border bg-background/65 p-5 shadow-sm">
         {messages.map((m) => (
           <div
             key={m.id}
             className={
               m.role === 'assistant'
-                ? 'text-foreground'
-                : 'text-muted-foreground text-right'
+                ? 'max-w-[90%] rounded-2xl rounded-bl-md bg-card px-4 py-3 text-foreground shadow-sm'
+                : 'ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-cool px-4 py-3 text-cool-foreground'
             }
           >
             <p className="text-sm leading-relaxed">
@@ -142,11 +145,10 @@ export default function PreparePage() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
       {!isReady && (
         <form
           onSubmit={handleSubmit}
-          className="fixed bottom-20 left-0 right-0 max-w-lg mx-auto px-8 flex gap-2"
+          className="fixed bottom-20 left-0 right-0 mx-auto flex w-full max-w-3xl gap-2 px-4 sm:px-8"
         >
           <Input
             value={input}
@@ -162,17 +164,16 @@ export default function PreparePage() {
         </form>
       )}
 
-      {/* Start timer — always visible, prominent when ready */}
-      <div className="fixed bottom-6 left-0 right-0 max-w-lg mx-auto px-8">
+      <div className="fixed bottom-6 left-0 right-0 mx-auto w-full max-w-3xl px-4 sm:px-8">
         <Button
           onClick={handleStart}
           size="lg"
-          className="w-full"
+          className="w-full rounded-full shadow-lg"
           variant={isReady ? 'default' : 'outline'}
         >
           {isReady ? "I'm ready — start the timer" : 'Skip — start timer now'}
         </Button>
       </div>
-    </main>
+    </div>
   )
 }

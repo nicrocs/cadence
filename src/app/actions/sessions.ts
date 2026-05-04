@@ -5,7 +5,6 @@ import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import { WorkSessionType } from '../../../prisma/generated/prisma/enums'
 import { streamText } from 'ai';
-import { openai } from '@ai-sdk/openai';
 import { createStreamableValue } from '@ai-sdk/rsc';
 import { getModel } from '@/lib/ai'
 

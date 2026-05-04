@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import {
   getActiveSession,
   startBreak,
-  clearActiveSession,
   type ActiveSession,
 } from '@/lib/active-session'
 import { getRandomSuggestion } from '@/lib/break-suggestions'
@@ -89,60 +88,66 @@ export default function ActiveSessionPage() {
 
   if (session.phase === 'break') {
     return (
-      <main className="max-w-xl mx-auto p-8 flex flex-col items-center gap-8 pt-16">
-        <div className="text-center space-y-1">
-          <p className="text-sm text-muted-foreground font-medium uppercase tracking-wide">
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-8 pt-8">
+        <div className="space-y-1 text-center">
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
             Nice work
           </p>
-          <h1 className="text-2xl font-bold">Take a break</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">Take a break</h1>
         </div>
 
         {session.breakSuggestion && (
-          <div className="rounded-lg border p-6 text-center max-w-sm">
-            <p className="text-base leading-relaxed">
+          <div className="max-w-xl rounded-[2rem] border bg-card/95 p-8 text-center shadow-sm">
+            <p className="text-base leading-relaxed text-foreground">
               {session.breakSuggestion.text}
             </p>
           </div>
         )}
 
-        <p className="text-2xl font-mono font-light tabular-nums">
-          {formatTime(secondsLeft)}
-        </p>
+        <div className="rounded-full border border-cool/20 bg-cool-muted/70 px-8 py-4">
+          <p className="text-3xl font-mono font-light tabular-nums text-cool-muted-foreground">
+            {formatTime(secondsLeft)}
+          </p>
+        </div>
 
-        <div className="flex gap-3 w-full">
-          <Button variant="outline" className="flex-1" onClick={handleSkipBreak}>
+        <div className="flex w-full max-w-xl flex-col gap-3 sm:flex-row">
+          <Button variant="outline" className="flex-1 rounded-full" onClick={handleSkipBreak}>
             Skip Break
           </Button>
-          <Button className="flex-1" onClick={handleDoneForNow}>
+          <Button className="flex-1 rounded-full" onClick={handleDoneForNow}>
             {`I'm Done for Now`}
           </Button>
         </div>
-      </main>
+      </div>
     )
   }
 
   return (
-    <main className="max-w-lg mx-auto p-8 flex flex-col items-center gap-8 pt-16">
-      {session.projectName && (
-        <p className="text-sm text-muted-foreground font-medium uppercase tracking-wide">
-          {session.projectName}
+    <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-8 pt-8">
+      <div className="w-full rounded-[2rem] border bg-card/95 px-6 py-8 text-center shadow-sm sm:px-10 sm:py-10">
+        <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
+          In Session
         </p>
-      )}
+        {session.projectName && (
+          <p className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
+            {session.projectName}
+          </p>
+        )}
 
-      <p
-        className="text-lg font-medium text-foreground leading-snug text-center max-w-sm"
-        style={{ borderLeft: '2px solid var(--primary)', paddingLeft: '0.75rem', textAlign: 'left' }}
-      >
-        {session.intention}
-      </p>
+        <p
+          className="mx-auto mt-4 max-w-xl border-l-2 border-cool pl-3 text-left text-lg font-medium leading-snug text-foreground"
+        >
+          {session.intention}
+        </p>
 
-      <p className="text-7xl font-mono font-light tabular-nums">
-        {formatTime(secondsLeft)}
-      </p>
+        <p className="mt-10 text-7xl font-mono font-light tabular-nums text-foreground sm:text-8xl">
+          {formatTime(secondsLeft)}
+        </p>
+      </div>
 
-      <Button variant="outline" onClick={handleFinishEarly}>
+      <Button variant="outline" className="rounded-full" onClick={handleFinishEarly}>
         Finish Early
       </Button>
-    </main>
+    </div>
   )
 }

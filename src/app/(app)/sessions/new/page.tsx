@@ -48,15 +48,18 @@ export default function NewSessionPage() {
   }
 
   return (
-    <main className="max-w-xl mx-auto p-8 flex flex-col gap-8">
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
       <div>
-        <h1 className="text-2xl font-bold">Start a Session</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
+          Session Setup
+        </p>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight">Start a Session</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           {`25 minutes. One thing. Let's go.`}
         </p>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-2 rounded-[1.5rem] border bg-card/90 p-5 shadow-sm">
         <Label className="text-base font-semibold">
           What are you working on?
         </Label>
@@ -66,13 +69,13 @@ export default function NewSessionPage() {
         />
       </div>
       {lastPickup && (
-        <div className="rounded-lg border p-4 space-y-2">
-          <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
+        <div className="space-y-3 rounded-[1.5rem] border border-cool/20 bg-cool-muted/70 p-5">
+          <p className="text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
             Where you left off
           </p>
           <p
             className="text-sm text-foreground leading-snug"
-            style={{ borderLeft: '2px solid var(--primary)', paddingLeft: '0.75rem' }}
+            style={{ borderLeft: '2px solid var(--cool)', paddingLeft: '0.75rem' }}
           >
             {lastPickup}
           </p>
@@ -85,7 +88,7 @@ export default function NewSessionPage() {
         </div>
       )}
 
-      <div className="space-y-2 mb-2">
+      <div className="space-y-2 rounded-[1.5rem] border bg-card/90 p-5 shadow-sm">
         <Label htmlFor="intention" className="text-base font-semibold">
           What do you want to accomplish?
         </Label>
@@ -107,10 +110,10 @@ export default function NewSessionPage() {
         onClick={handleStart}
         disabled={!intention.trim()}
         size="lg"
-        className="w-full"
+        className="w-full rounded-full"
       >
         Start Session
       </Button>
-    </main>
+    </div>
   )
 }

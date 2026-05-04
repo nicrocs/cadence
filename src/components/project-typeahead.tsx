@@ -78,7 +78,7 @@ export function ProjectTypeahead({ defaultValue, onSelect, onChange }: ProjectTy
             {suggestions.map((project) => (
               <li
                 key={project.id}
-                className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm flex justify-between items-center"
+                className="flex cursor-pointer items-center justify-between px-3 py-2 text-sm hover:bg-accent"
                 onMouseDown={() => handleSelect(project)}
               >
                 <span>{project.name}</span>

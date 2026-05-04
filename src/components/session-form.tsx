@@ -5,7 +5,6 @@ import { SubmitButton } from '@/components/submit-button'
 import { Separator } from '@/components/ui/separator'
 // import { ProjectTypeahead } from '@/components/project-typeahead'
 // import { IntentionMetRadioGroup } from './intention-met-radio-group'
-import { TypeSelect } from './type-select'
 
 type SessionFormProps = {
   action: (formData: FormData) => Promise<void>
@@ -81,7 +80,7 @@ export function SessionForm({ action, defaultValues, submitLabel }: SessionFormP
         />
       </div>
       <div className="flex flex-col gap-1">
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-muted-foreground">
             What type of work did you do?
           </span>
           {/* <TypeSelect name="type" /> */}
