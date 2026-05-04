@@ -20,9 +20,14 @@ export default async function EditSessionPage({ params } : { params: Promise<{ i
   const updateWithId = updateSession.bind(null, session.id)
 
   return (
-    <main className="max-w-xl mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-6">Edit Session</h1>
-      {/* <SessionForm
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
+      <div>
+        <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
+          Session Edit
+        </p>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight">Edit Session</h1>
+      </div>
+      <SessionForm
         action={updateWithId}
         submitLabel="Update Session"
         defaultValues={{
@@ -32,9 +37,10 @@ export default async function EditSessionPage({ params } : { params: Promise<{ i
           projectName: session.project?.name,
           accomplished: session.accomplished,
           intention: session.intention,
-          intentionMet: session.intentionMet
+          intentionMet: session.intentionMet,
+          pickup: session.pickup,
         }}
-      /> */}
-    </main>
+      />
+    </div>
   )
 }

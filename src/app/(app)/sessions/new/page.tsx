@@ -9,6 +9,9 @@ import { ProjectTypeahead, Project } from '@/components/project-typeahead'
 import { saveActiveSession } from '@/lib/active-session'
 import { getLastSessionForProject } from '@/app/actions/sessions'
 
+const fieldClassName =
+  'min-h-0 rounded-none border-0 border-b border-border bg-transparent px-0 py-3 shadow-none focus-visible:border-ring focus-visible:ring-0 md:text-base'
+
 export default function NewSessionPage() {
   const router = useRouter()
   const [intention, setIntention] = useState('')
@@ -59,13 +62,14 @@ export default function NewSessionPage() {
         </p>
       </div>
 
-      <div className="space-y-2 rounded-[1.5rem] border bg-card/90 p-5 shadow-sm">
+      <div className="space-y-2 border-b border-border/80 pb-6">
         <Label className="text-base font-semibold">
           What are you working on?
         </Label>
         <ProjectTypeahead
           onSelect={handleProjectSelect}
           onChange={handleProjectInput}
+          inputClassName={fieldClassName}
         />
       </div>
       {lastPickup && (
@@ -88,7 +92,7 @@ export default function NewSessionPage() {
         </div>
       )}
 
-      <div className="space-y-2 rounded-[1.5rem] border bg-card/90 p-5 shadow-sm">
+      <div className="space-y-2 border-b border-border/80 pb-6">
         <Label htmlFor="intention" className="text-base font-semibold">
           What do you want to accomplish?
         </Label>
@@ -100,7 +104,7 @@ export default function NewSessionPage() {
           value={intention}
           onChange={e => setIntention(e.target.value)}
           placeholder="e.g. Write the finish screen component and wire it to the session action"
-          className="min-h-[100px] text-base"
+          className={`${fieldClassName} min-h-[100px]`}
           rows={3}
           autoFocus
         />

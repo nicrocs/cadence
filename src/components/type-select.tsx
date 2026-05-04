@@ -16,17 +16,31 @@ export const SESSION_TYPES = [
   { value: 'COLLABORATION', label: 'Collaboration' },
 ]
 
-export function TypeSelect({ onChange }: { onChange: (type: string) => void }) {
-    const [value, setValue] = useState<string>('DEEP_WORK')
+type TypeSelectProps = {
+  defaultValue?: string
+  name?: string
+  onChange?: (type: string) => void
+  triggerClassName?: string
+}
 
-    const onValueChange = (v: string) => {
-      setValue(v)
-      onChange(v)
-    }
+export function TypeSelect({
+  defaultValue = 'DEEP_WORK',
+  name = 'type',
+  onChange,
+  triggerClassName,
+}: TypeSelectProps) {
+  const [value, setValue] = useState<string>(defaultValue)
+
+  const onValueChange = (v: string) => {
+    setValue(v)
+    onChange?.(v)
+  }
+
   return (
     <>
+      <input type="hidden" name={name} value={value} />
       <Select value={value} onValueChange={onValueChange}>
-        <SelectTrigger>
+        <SelectTrigger className={triggerClassName}>
           <SelectValue placeholder="Type (optional)" />
         </SelectTrigger>
         <SelectContent>

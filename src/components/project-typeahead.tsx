@@ -8,10 +8,16 @@ import { getProjects } from '@/app/actions/projects'
 export type Project = { id: string; name: string; }
 interface ProjectTypeaheadProps { 
   defaultValue?: string, 
-  onSelect: (project: Project | null) => void
-  onChange: (value: string) => void
+  onSelect?: (project: Project | null) => void
+  onChange?: (value: string) => void
+  inputClassName?: string
 }
-export function ProjectTypeahead({ defaultValue, onSelect, onChange }: ProjectTypeaheadProps) {
+export function ProjectTypeahead({
+  defaultValue,
+  onSelect,
+  onChange,
+  inputClassName,
+}: ProjectTypeaheadProps) {
   const [query, setQuery] = useState(defaultValue ?? '')
     const [suggestions, setSuggestions] = useState<Project[]>([])
     // const [selectedProject, setSelectedProject] = useState<Project | null>(null)
@@ -29,7 +35,7 @@ export function ProjectTypeahead({ defaultValue, onSelect, onChange }: ProjectTy
               const exactMatch = results.find(
                   (s) => s.name.toLowerCase() === query.toLowerCase()
               )
-              if (exactMatch) onSelect(exactMatch)
+              if (exactMatch) onSelect?.(exactMatch)
             })
         }, 200)
 
@@ -38,13 +44,13 @@ export function ProjectTypeahead({ defaultValue, onSelect, onChange }: ProjectTy
 
     function handleSelect(project: Project) {
         setQuery(project.name)
-        onSelect(project)
+        onSelect?.(project)
         setSuggestions([])
     }
 
     function handleClear() {
         setQuery('')
-        onSelect(null)
+        onSelect?.(null)
         setSuggestions([])
     }
 
@@ -52,13 +58,15 @@ export function ProjectTypeahead({ defaultValue, onSelect, onChange }: ProjectTy
     <div ref={containerRef} className="flex flex-col gap-2">
       <div className="relative">
         <Input
+          id="projectName"
           type="text"
           name="projectName"
           value={query}
+          className={inputClassName}
           onChange={(e) => {
             setQuery(e.target.value)
-            onSelect(null)
-            onChange(e.target.value)
+            onSelect?.(null)
+            onChange?.(e.target.value)
           }}
           placeholder="Project name (optional)"
           autoComplete="off"

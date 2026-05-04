@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label'
 
 type Props = {
   defaultValue?: boolean | null
-  onChange: (value: boolean | null) => void
+  onChange?: (value: boolean | null) => void
 }
 
 export function IntentionMetRadioGroup({ defaultValue, onChange }: Props) {
